@@ -14,7 +14,10 @@ public enum AwsCwlMessages implements Messages {
     AWS_CWL_ERR_9002("com.epion_t3.aws.cwl.err.9002"),
 
     /** CloudWatchLogsのLogStreamの取得に失敗しました。LogGroup:{0} */
-    AWS_CWL_ERR_9001("com.epion_t3.aws.cwl.err.9001");
+    AWS_CWL_ERR_9001("com.epion_t3.aws.cwl.err.9001"),
+
+    /** 合致するLogStreamが1件も見つかりません。LogGroup:{0} */
+    AWS_CWL_ERR_9003("com.epion_t3.aws.cwl.err.9003");
 
     /** メッセージコード */
     private String messageCode;
