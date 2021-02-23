@@ -17,4 +17,6 @@ public class AwsCwlGetLogEvents extends AwsCwlBase {
     private Long endTime;
     // Default : false
     private Boolean startFromHead;
+    // メッセージがJSONであるかどうか
+    private boolean json = false;
 }

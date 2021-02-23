@@ -8,15 +8,18 @@ import lombok.Setter;
 
 @Getter
 @Setter
-@CommandDefinition(id = "AwsCwlGetLastLogStreamEvents", runner = AwsCwlGetLogStreamEventsRunner.class)
-public class AwsCwlGetLastLogStreamEvents extends AwsCwlBase {
+@CommandDefinition(id = "AwsCwlGetLogStreamEvents", runner = AwsCwlGetLogStreamEventsRunner.class)
+public class AwsCwlGetLogStreamEvents extends AwsCwlBase {
     private String logGroupName;
     private String logStreamNamePrefix;
+    private Integer streamLimit;
     private String orderBy;
     private boolean descending;
-    private Integer eventsLimit;
+    private Integer eventLimit;
     private Long startTime;
     private Long endTime;
     // Default : false
     private Boolean startFromHead;
+    // メッセージがJSONであるかどうか
+    private boolean json = false;
 }

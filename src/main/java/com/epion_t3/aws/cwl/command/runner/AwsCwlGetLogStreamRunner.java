@@ -15,9 +15,11 @@ import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import software.amazon.awssdk.services.cloudwatchlogs.CloudWatchLogsClient;
 import software.amazon.awssdk.services.cloudwatchlogs.model.DescribeLogStreamsRequest;
+import software.amazon.awssdk.services.cloudwatchlogs.model.DescribeLogStreamsResponse;
 import software.amazon.awssdk.services.cloudwatchlogs.model.OrderBy;
 
 import java.io.FileOutputStream;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -50,9 +52,9 @@ public class AwsCwlGetLogStreamRunner extends AbstractCommandRunner<AwsCwlGetLog
             requestBuilder.logStreamNamePrefix(command.getLogStreamNamePrefix());
         }
 
-        if (command.getLimit() != null) {
-            requestBuilder.limit(command.getLimit());
-        }
+//        if (command.getLimit() != null) {
+//            requestBuilder.limit(command.getLimit());
+//        }
 
         if (StringUtils.equalsAny(command.getOrderBy(), OrderBy.LAST_EVENT_TIME.toString(),
                 OrderBy.LAST_EVENT_TIME.toString())) {
@@ -61,18 +63,28 @@ public class AwsCwlGetLogStreamRunner extends AbstractCommandRunner<AwsCwlGetLog
 
         requestBuilder.descending(command.isDescending());
 
-        var logStreams = (List<LogStreamInfo>) null;
+        final var logStreams = new ArrayList<LogStreamInfo>();
 
         try {
-            var response = cloudWatchLogs.describeLogStreamsPaginator(requestBuilder.build());
-
-            logStreams = response.logStreams()
-                    .stream()
-                    .map(x -> new LogStreamInfo(x.logStreamName(), x.creationTime(), x.firstEventTimestamp(),
-                            x.lastEventTimestamp(), x.lastIngestionTime(), x.uploadSequenceToken()))
-                    .collect(Collectors.toList());
+            var describeLogStreamResponse = (DescribeLogStreamsResponse) null;
+            while (logStreams.size() < command.getLimit()) {
+                if (describeLogStreamResponse != null) {
+                    requestBuilder.nextToken(describeLogStreamResponse.nextToken());
+                }
+                describeLogStreamResponse = cloudWatchLogs.describeLogStreams(requestBuilder.build());
+                var ite = describeLogStreamResponse.logStreams().iterator();
+                while (ite.hasNext()) {
+                    var logStream = ite.next();
+                    logStreams.add(new LogStreamInfo(logStream.logStreamName(), logStream.creationTime(),
+                            logStream.firstEventTimestamp(), logStream.lastEventTimestamp(),
+                            logStream.lastIngestionTime(), logStream.uploadSequenceToken()));
+                    if (logStreams.size() >= command.getLimit()) {
+                        break;
+                    }
+                }
+            }
         } catch (Exception e) {
-            throw new SystemException(AwsCwlMessages.AWS_CWL_ERR_9001, command.getLogGroupName());
+            throw new SystemException(e, AwsCwlMessages.AWS_CWL_ERR_9001, command.getLogGroupName());
         }
 
         var evidencePath = getEvidencePath("logStreams.json");

@@ -38,6 +38,7 @@ AmazonWebService（AWS）のCloudWatchLogs（CWL）への各種アクセスを�
 |Name|Summary|Assert|Evidence|
 |:---|:---|:---|:---|
 |[AwsCwlGetLogStream](#AwsCwlGetLogStream)|LogStreamを取得します。  ||X|
+|[AwsCwlGetLogStreamEvents](#AwsCwlGetLogStreamEvents)|指定されたLogGroupの最終LogStreamのLogイベントを取得します。  ||X|
 |[AwsCwlGetLogEvents](#AwsCwlGetLogEvents)|Logイベント（ログそのもの）を取得します。  ||X|
 
 ------
@@ -71,6 +72,40 @@ commands :
 
 ------
 
+### AwsCwlGetLogStreamEvents
+指定されたLogGroupの最終LogStreamのLogイベントを取得します。
+#### Command Type
+- Assert : No
+- Evidence : __Yes__
+
+#### Functions
+- 指定されたLogGroupの最終LogStreamのLogイベントを取得します。
+- logStreamNamePrefix、limit、orderBy、descendingによるLogStream取得制御が行えます。
+- eventsLimit、startTime、endTimeによるLogイベント取得制御が行えます。
+- 取得したログの一覧は、JSON形式のエビデンスとして保存します。
+- エビデンスファイル名は、「実行ID ＋ logEvents.json」となります。
+
+#### Structure
+```yaml
+commands : 
+  id : コマンドのID
+  command : 「AwsCwlGetLogStreamEvents」固定
+  summary : コマンドの概要（任意）
+  description : コマンドの詳細（任意）
+  logGroupName : 対象とするLogGroupの名前を指定します。
+  logStreamNamePrefix : 対象とするLogStreamの接頭辞を指定します。
+  streamLimit : LogStreamの件数の上限を設定します。デフォルトは1です。この数より多いLogStreamが存在する場合でも指定された値までしか取得しません。
+  orderBy : 結果のソート方法を「LogStreamName」、「LastEventTime」のいずれかを指定します。いずれかの文字列の完全一致でなければなりません。
+  descending : 結果のソートを降順にするかどうかのフラグです。
+  eventLimit : 取得するLogイベントの上限件数を指定します。この数より多いLogイベントが存在する場合でも指定された値までしか取得しません。
+  startTime : イベントの開始時間を指定します。エポックミリ秒で指定します。
+  endTime : イベントの終了時間を指定します。エポックミリ秒で指定します。
+  startFromHead : イベントの開始を先頭から出力するかのフラグです。デフォルトはfalseです。
+
+```
+
+------
+
 ### AwsCwlGetLogEvents
 Logイベント（ログそのもの）を取得します。
 #### Command Type
@@ -92,7 +127,7 @@ commands :
   description : コマンドの詳細（任意）
   logGroupName : 対象とするLogGroupの名前を指定します。
   logStreamName : 対象とするLogStreamの接頭辞を指定します。
-  limit : 取得するLogStreamの上限件数を指定します。
+  limit : 取得するLogStreamの上限件数を指定します。この数より多いLogStreamが存在する場合でも指定された値までしか取得しません。
   startTime : イベントの開始時間を指定します。エポックミリ秒で指定します。
   endTime : イベントの終了時間を指定します。エポックミリ秒で指定します。
   startFromHead : イベントの開始を先頭から出力するかのフラグです。デフォルトはfalseです。

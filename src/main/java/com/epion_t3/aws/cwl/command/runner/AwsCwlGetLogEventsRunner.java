@@ -72,8 +72,12 @@ public class AwsCwlGetLogEventsRunner extends AbstractCommandRunner<AwsCwlGetLog
             var response = cloudWatchLogs.getLogEventsPaginator(requestBuilder.build());
             logEvents = response.events().stream().map(x -> {
                 try {
-                    return new LogEventInfo(x.ingestionTime(), x.timestamp(), x.message(),
-                            objectMapper.readValue(x.message(), (new LinkedHashMap<String, Object>(0)).getClass()));
+                    if (command.isJson()) {
+                        return new LogEventInfo(x.ingestionTime(), x.timestamp(), x.message(),
+                                objectMapper.readValue(x.message(), (new LinkedHashMap<String, Object>(0)).getClass()));
+                    } else {
+                        return new LogEventInfo(x.ingestionTime(), x.timestamp(), x.message(), null);
+                    }
                 } catch (JsonProcessingException e) {
                     throw new SystemException();
                 }
