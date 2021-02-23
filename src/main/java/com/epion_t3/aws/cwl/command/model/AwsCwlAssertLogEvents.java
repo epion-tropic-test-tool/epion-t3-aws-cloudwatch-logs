@@ -1,3 +1,4 @@
+/* Copyright (c) 2017-2021 Nozomu Takashima. */
 package com.epion_t3.aws.cwl.command.model;
 
 import com.epion_t3.aws.cwl.command.runner.AwsCwlGetLogEventsRunner;
