@@ -1,1 +1,7 @@
-rootProject.name = 'epion-t3-custom-template'
+pluginManagement {
+    plugins {
+        id "com.diffplug.gradle.spotless" version "3.26.1"
+        id "com.jfrog.bintray" version "1.8.4"
+    }
+}
+rootProject.name = 'epion-t3-aws-cloudwatch-logs'
