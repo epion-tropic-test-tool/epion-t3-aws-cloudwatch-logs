@@ -27,7 +27,7 @@ ext {
     siteUrl = 'https://docs.epion-t3.com'
 
     // SCM（GitHub）
-    githubUrl = "https://github.com/epion-tropic-test-tool/epion-t3-${customPackageName}"
+    githubUrl = "https://github.com/epion-tropic-test-tool/epion-t3-aws-cloudwatch-logs"
 
 }
 
