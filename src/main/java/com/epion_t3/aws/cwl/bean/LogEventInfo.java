@@ -1,5 +1,5 @@
 /* Copyright (c) 2017-2021 Nozomu Takashima. */
-package com.epion_t3.aws.cwl.command.model;
+package com.epion_t3.aws.cwl.bean;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

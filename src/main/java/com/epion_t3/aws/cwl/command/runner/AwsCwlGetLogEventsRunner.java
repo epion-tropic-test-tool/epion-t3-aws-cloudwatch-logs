@@ -4,7 +4,7 @@ package com.epion_t3.aws.cwl.command.runner;
 import com.epion_t3.aws.core.configuration.AwsCredentialsProviderConfiguration;
 import com.epion_t3.aws.core.holder.AwsCredentialsProviderHolder;
 import com.epion_t3.aws.cwl.command.model.AwsCwlGetLogEvents;
-import com.epion_t3.aws.cwl.command.model.LogEventInfo;
+import com.epion_t3.aws.cwl.bean.LogEventInfo;
 import com.epion_t3.aws.cwl.messages.AwsCwlMessages;
 import com.epion_t3.core.command.bean.CommandResult;
 import com.epion_t3.core.command.runner.impl.AbstractCommandRunner;
@@ -79,11 +79,11 @@ public class AwsCwlGetLogEventsRunner extends AbstractCommandRunner<AwsCwlGetLog
                         return new LogEventInfo(x.ingestionTime(), x.timestamp(), x.message(), null);
                     }
                 } catch (JsonProcessingException e) {
-                    throw new SystemException();
+                    throw new SystemException(e, AwsCwlMessages.AWS_CWL_ERR_9004);
                 }
             }).collect(Collectors.toList());
         } catch (Exception e) {
-            throw new SystemException(AwsCwlMessages.AWS_CWL_ERR_9002, command.getLogGroupName(),
+            throw new SystemException(e, AwsCwlMessages.AWS_CWL_ERR_9002, command.getLogGroupName(),
                     command.getLogStreamName());
         }
 

@@ -4,7 +4,7 @@ package com.epion_t3.aws.cwl.command.runner;
 import com.epion_t3.aws.core.configuration.AwsCredentialsProviderConfiguration;
 import com.epion_t3.aws.core.holder.AwsCredentialsProviderHolder;
 import com.epion_t3.aws.cwl.command.model.AwsCwlGetLogStream;
-import com.epion_t3.aws.cwl.command.model.LogStreamInfo;
+import com.epion_t3.aws.cwl.bean.LogStreamInfo;
 import com.epion_t3.aws.cwl.messages.AwsCwlMessages;
 import com.epion_t3.core.command.bean.CommandResult;
 import com.epion_t3.core.command.runner.impl.AbstractCommandRunner;
@@ -20,8 +20,6 @@ import software.amazon.awssdk.services.cloudwatchlogs.model.OrderBy;
 
 import java.io.FileOutputStream;
 import java.util.ArrayList;
-import java.util.List;
-import java.util.stream.Collectors;
 
 public class AwsCwlGetLogStreamRunner extends AbstractCommandRunner<AwsCwlGetLogStream> {
 

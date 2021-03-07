@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="ja" xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <title>ETTT-Report</title>
+
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.2/css/bootstrap.min.css"
+          integrity="sha384-Smlep5jCw/wG7hdkwQ/Z5nLIefveQRIY9nfy6xoR1uRYBtpZgI6339F5dgvm/e9B" crossorigin="anonymous">
+          
+    <style type="text/css">
+        .ignore {
+            background: #AEB6BF;
+        }
+
+    </style>
+</head>
+
+<body>
+
+<nav class="navbar navbar-expand-md navbar-dark bg-dark mb-4">
+    <span class="navbar-brand col-md-11">ETTT-Reports</span>
+    <span style="color:#eee">Version:1.0.0</span>
+</nav>
+
+<main role="main" class="container">
+
+    <nav class="breadcrumb">
+        <a class="breadcrumb-item" href="#" th:href="'../../report.html'">All</a>
+        <a class="breadcrumb-item" href="#" th:href="'../scenario_report.html'">Scenario</a>
+        <a class="breadcrumb-item" href="#">AwsCwlAssertLogEvents&nbsp;Reports</a>
+    </nav>
+
+    <ul>
+        <li><a href="#commandInformation">Command&nbsp;Information</a></li>
+        <li><a href="#assertResultInformation">Assert&nbsp;Result&nbsp;Information</a></li>
+    </ul>
+
+    <!-- Request Information. -->
+    <section class="row">
+        <div class="col-md-12">
+            <h2 id="commandInformation">Command&nbsp;Information</h2>
+            <table class="table table-sm table-bordered">
+                <tbody>
+                <tr>
+                    <th class="bg-dark" style="width:200px;color:white">json</th>
+                    <td th:text="${command.json}">false</td>
+                </tr>
+                <tr>
+                    <th class="bg-dark" style="width:200px;color:white">targetJsonPath</th>
+                    <td th:text="${command.targetJsonPath}">...</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </section>
+
+    <!-- Error Information. -->
+    <section class="row">
+        <div class="col-md-12">
+            <h2 id="assertResultInformation">Assert&nbsp;Result&nbsp;Information</h2>
+            <table class="table table-sm table-bordered">
+                <tbody>
+                    <tr>
+                        <th class="bg-dark" style="width:200px;color:white">expected</th>
+                        <th class="bg-dark" style="width:200px;color:white">regexp</th>
+                        <th class="bg-dark" style="width:200px;color:white">actual</th>
+                        <th class="bg-dark" style="width:200px;color:white">status</th>
+                    </tr>
+                    <th:block th:if="${assertDetails}">
+                        <th:block th:each="assertInfo : ${assertDetails}">
+                            <tr>
+                                <td th:text="${assertInfo.expected}" th:class="${assertInfo.assertStatus.getCssClass()}">...</td>
+                                <td th:text="${assertInfo.regexp}" th:class="${assertInfo.assertStatus.getCssClass()}">...</td>
+                                <td th:text="${assertInfo.actual}" th:class="${assertInfo.assertStatus.getCssClass()}">...</td>
+                                <td th:text="${assertInfo.assertStatus}" th:class="${assertInfo.assertStatus.getCssClass()}">...</td>
+                            </tr>
+                        </th:block>
+                    </th:block>
+                </tbody>
+            </table>
+        </div>
+    </section>
+
+</main>
+
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+        integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+        crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"
+        integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49"
+        crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.2/js/bootstrap.min.js"
+        integrity="sha384-o+RDsa0aLu++PJvFqy8fFScvbHFLtbvScb8AjopnFD+iEQ7wo/CG0xlczd+2O/em"
+        crossorigin="anonymous"></script>
+</body>
+</html>

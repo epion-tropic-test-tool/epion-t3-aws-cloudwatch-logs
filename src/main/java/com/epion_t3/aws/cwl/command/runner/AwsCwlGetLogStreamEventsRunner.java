@@ -4,9 +4,9 @@ package com.epion_t3.aws.cwl.command.runner;
 import com.epion_t3.aws.core.configuration.AwsCredentialsProviderConfiguration;
 import com.epion_t3.aws.core.holder.AwsCredentialsProviderHolder;
 import com.epion_t3.aws.cwl.command.model.AwsCwlGetLogStreamEvents;
-import com.epion_t3.aws.cwl.command.model.LogEventInfo;
-import com.epion_t3.aws.cwl.command.model.LogEventsInfo;
-import com.epion_t3.aws.cwl.command.model.LogStreamInfo;
+import com.epion_t3.aws.cwl.bean.LogEventInfo;
+import com.epion_t3.aws.cwl.bean.LogEventsInfo;
+import com.epion_t3.aws.cwl.bean.LogStreamInfo;
 import com.epion_t3.aws.cwl.messages.AwsCwlMessages;
 import com.epion_t3.core.command.bean.CommandResult;
 import com.epion_t3.core.command.runner.impl.AbstractCommandRunner;
@@ -27,7 +27,6 @@ import java.io.FileOutputStream;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 public class AwsCwlGetLogStreamEventsRunner extends AbstractCommandRunner<AwsCwlGetLogStreamEvents> {
@@ -59,12 +58,6 @@ public class AwsCwlGetLogStreamEventsRunner extends AbstractCommandRunner<AwsCwl
             getLogStreamRequestBuilder.logStreamNamePrefix(command.getLogStreamNamePrefix());
         }
 
-//        if (command.getStreamLimit() != null) {
-//            getLogStreamRequestBuilder.limit(command.getStreamLimit());
-//        } else {
-//            getLogStreamRequestBuilder.limit(1);
-//        }
-
         if (StringUtils.equalsAny(command.getOrderBy(), OrderBy.LAST_EVENT_TIME.toString(),
                 OrderBy.LAST_EVENT_TIME.toString())) {
             getLogStreamRequestBuilder.orderBy(OrderBy.fromValue(command.getOrderBy()));
@@ -72,7 +65,7 @@ public class AwsCwlGetLogStreamEventsRunner extends AbstractCommandRunner<AwsCwl
 
         getLogStreamRequestBuilder.descending(command.isDescending());
 
-        final var logStreams = new ArrayList<LogStreamInfo>();
+        var logStreams = new ArrayList<LogStreamInfo>();
 
         try {
             var describeLogStreamResponse = (DescribeLogStreamsResponse) null;
@@ -81,13 +74,12 @@ public class AwsCwlGetLogStreamEventsRunner extends AbstractCommandRunner<AwsCwl
                     getLogStreamRequestBuilder.nextToken(describeLogStreamResponse.nextToken());
                 }
                 describeLogStreamResponse = cloudWatchLogs.describeLogStreams(getLogStreamRequestBuilder.build());
-                var ite = describeLogStreamResponse.logStreams().iterator();
-                while (ite.hasNext()) {
-                    var logStream = ite.next();
+                for (LogStream logStream : describeLogStreamResponse.logStreams()) {
                     logStreams.add(new LogStreamInfo(logStream.logStreamName(), logStream.creationTime(),
                             logStream.firstEventTimestamp(), logStream.lastEventTimestamp(),
                             logStream.lastIngestionTime(), logStream.uploadSequenceToken()));
                     if (logStreams.size() >= command.getStreamLimit()) {
+                        // LogStreamの取得数が上限以上になった場合は、取得を終了
                         break;
                     }
                 }
@@ -107,6 +99,7 @@ public class AwsCwlGetLogStreamEventsRunner extends AbstractCommandRunner<AwsCwl
 
             var logEventsInfo = new LogEventsInfo();
             allLogEvent.add(logEventsInfo);
+            logEventsInfo.setLogGroupName(command.getLogGroupName());
             logEventsInfo.setLogStreamName(logStreamInfo.getLogStreamName());
             logEventsInfo.setCreationTime(logStreamInfo.getCreationTime());
             logEventsInfo.setFirstEventTimestamp(logStreamInfo.getFirstEventTimestamp());
