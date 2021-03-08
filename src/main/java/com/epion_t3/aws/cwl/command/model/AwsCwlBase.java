@@ -8,5 +8,10 @@ import lombok.Setter;
 @Getter
 @Setter
 public class AwsCwlBase extends Command {
+
+    /** 資格情報設定の参照名. */
     private String credentialsConfigRef;
+
+    /** HTTPクライアント設定の参照名. */
+    private String sdkHttpClientConfigRef;
 }

@@ -2,11 +2,13 @@
 package com.epion_t3.aws.cwl.command.runner;
 
 import com.epion_t3.aws.core.configuration.AwsCredentialsProviderConfiguration;
+import com.epion_t3.aws.core.configuration.AwsSdkHttpClientConfiguration;
 import com.epion_t3.aws.core.holder.AwsCredentialsProviderHolder;
-import com.epion_t3.aws.cwl.command.model.AwsCwlGetLogStreamEvents;
+import com.epion_t3.aws.core.holder.AwsSdkHttpClientHolder;
 import com.epion_t3.aws.cwl.bean.LogEventInfo;
 import com.epion_t3.aws.cwl.bean.LogEventsInfo;
 import com.epion_t3.aws.cwl.bean.LogStreamInfo;
+import com.epion_t3.aws.cwl.command.model.AwsCwlGetLogStreamEvents;
 import com.epion_t3.aws.cwl.messages.AwsCwlMessages;
 import com.epion_t3.core.command.bean.CommandResult;
 import com.epion_t3.core.command.runner.impl.AbstractCommandRunner;
@@ -50,7 +52,18 @@ public class AwsCwlGetLogStreamEventsRunner extends AbstractCommandRunner<AwsCwl
         var credentialsProvider = AwsCredentialsProviderHolder.getInstance()
                 .getCredentialsProvider(awsCredentialsProviderConfiguration);
 
-        var cloudWatchLogs = CloudWatchLogsClient.builder().credentialsProvider(credentialsProvider).build();
+        var cloudWatchLogs = (CloudWatchLogsClient) null;
+        if (StringUtils.isEmpty(command.getSdkHttpClientConfigRef())) {
+            cloudWatchLogs = CloudWatchLogsClient.builder().credentialsProvider(credentialsProvider).build();
+        } else {
+            var sdkHttpClientConfiguration = (AwsSdkHttpClientConfiguration) referConfiguration(
+                    command.getSdkHttpClientConfigRef());
+            var sdkHttpClient = AwsSdkHttpClientHolder.getInstance().getSdkHttpClient(sdkHttpClientConfiguration);
+            cloudWatchLogs = CloudWatchLogsClient.builder()
+                    .credentialsProvider(credentialsProvider)
+                    .httpClient(sdkHttpClient)
+                    .build();
+        }
 
         var getLogStreamRequestBuilder = DescribeLogStreamsRequest.builder().logGroupName(command.getLogGroupName());
 

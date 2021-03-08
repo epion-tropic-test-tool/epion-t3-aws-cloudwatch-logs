@@ -2,9 +2,11 @@
 package com.epion_t3.aws.cwl.command.runner;
 
 import com.epion_t3.aws.core.configuration.AwsCredentialsProviderConfiguration;
+import com.epion_t3.aws.core.configuration.AwsSdkHttpClientConfiguration;
 import com.epion_t3.aws.core.holder.AwsCredentialsProviderHolder;
-import com.epion_t3.aws.cwl.command.model.AwsCwlGetLogEvents;
+import com.epion_t3.aws.core.holder.AwsSdkHttpClientHolder;
 import com.epion_t3.aws.cwl.bean.LogEventInfo;
+import com.epion_t3.aws.cwl.command.model.AwsCwlGetLogEvents;
 import com.epion_t3.aws.cwl.messages.AwsCwlMessages;
 import com.epion_t3.core.command.bean.CommandResult;
 import com.epion_t3.core.command.runner.impl.AbstractCommandRunner;
@@ -12,6 +14,7 @@ import com.epion_t3.core.exception.SystemException;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import software.amazon.awssdk.services.cloudwatchlogs.CloudWatchLogsClient;
 import software.amazon.awssdk.services.cloudwatchlogs.model.GetLogEventsRequest;
@@ -45,7 +48,18 @@ public class AwsCwlGetLogEventsRunner extends AbstractCommandRunner<AwsCwlGetLog
         var credentialsProvider = AwsCredentialsProviderHolder.getInstance()
                 .getCredentialsProvider(awsCredentialsProviderConfiguration);
 
-        var cloudWatchLogs = CloudWatchLogsClient.builder().credentialsProvider(credentialsProvider).build();
+        var cloudWatchLogs = (CloudWatchLogsClient) null;
+        if (StringUtils.isEmpty(command.getSdkHttpClientConfigRef())) {
+            cloudWatchLogs = CloudWatchLogsClient.builder().credentialsProvider(credentialsProvider).build();
+        } else {
+            var sdkHttpClientConfiguration = (AwsSdkHttpClientConfiguration) referConfiguration(
+                    command.getSdkHttpClientConfigRef());
+            var sdkHttpClient = AwsSdkHttpClientHolder.getInstance().getSdkHttpClient(sdkHttpClientConfiguration);
+            cloudWatchLogs = CloudWatchLogsClient.builder()
+                    .credentialsProvider(credentialsProvider)
+                    .httpClient(sdkHttpClient)
+                    .build();
+        }
 
         var requestBuilder = GetLogEventsRequest.builder()
                 .logGroupName(command.getLogGroupName())

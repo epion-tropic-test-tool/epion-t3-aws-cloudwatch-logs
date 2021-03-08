@@ -2,9 +2,11 @@
 package com.epion_t3.aws.cwl.command.runner;
 
 import com.epion_t3.aws.core.configuration.AwsCredentialsProviderConfiguration;
+import com.epion_t3.aws.core.configuration.AwsSdkHttpClientConfiguration;
 import com.epion_t3.aws.core.holder.AwsCredentialsProviderHolder;
-import com.epion_t3.aws.cwl.command.model.AwsCwlGetLogStream;
+import com.epion_t3.aws.core.holder.AwsSdkHttpClientHolder;
 import com.epion_t3.aws.cwl.bean.LogStreamInfo;
+import com.epion_t3.aws.cwl.command.model.AwsCwlGetLogStream;
 import com.epion_t3.aws.cwl.messages.AwsCwlMessages;
 import com.epion_t3.core.command.bean.CommandResult;
 import com.epion_t3.core.command.runner.impl.AbstractCommandRunner;
@@ -42,17 +44,24 @@ public class AwsCwlGetLogStreamRunner extends AbstractCommandRunner<AwsCwlGetLog
         var credentialsProvider = AwsCredentialsProviderHolder.getInstance()
                 .getCredentialsProvider(awsCredentialsProviderConfiguration);
 
-        var cloudWatchLogs = CloudWatchLogsClient.builder().credentialsProvider(credentialsProvider).build();
+        var cloudWatchLogs = (CloudWatchLogsClient) null;
+        if (StringUtils.isEmpty(command.getSdkHttpClientConfigRef())) {
+            cloudWatchLogs = CloudWatchLogsClient.builder().credentialsProvider(credentialsProvider).build();
+        } else {
+            var sdkHttpClientConfiguration = (AwsSdkHttpClientConfiguration) referConfiguration(
+                    command.getSdkHttpClientConfigRef());
+            var sdkHttpClient = AwsSdkHttpClientHolder.getInstance().getSdkHttpClient(sdkHttpClientConfiguration);
+            cloudWatchLogs = CloudWatchLogsClient.builder()
+                    .credentialsProvider(credentialsProvider)
+                    .httpClient(sdkHttpClient)
+                    .build();
+        }
 
         var requestBuilder = DescribeLogStreamsRequest.builder().logGroupName(command.getLogGroupName());
 
         if (StringUtils.isNotEmpty(command.getLogStreamNamePrefix())) {
             requestBuilder.logStreamNamePrefix(command.getLogStreamNamePrefix());
         }
-
-//        if (command.getLimit() != null) {
-//            requestBuilder.limit(command.getLimit());
-//        }
 
         if (StringUtils.equalsAny(command.getOrderBy(), OrderBy.LAST_EVENT_TIME.toString(),
                 OrderBy.LAST_EVENT_TIME.toString())) {
