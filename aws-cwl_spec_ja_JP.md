@@ -63,6 +63,8 @@ commands :
   command : 「AwsCwlGetLogStream」固定
   summary : コマンドの概要（任意）
   description : コマンドの詳細（任意）
+  credentialsConfigRef : 資格設定の参照
+  sdkHttpClientConfigRef : HTTPクライアント設定の参照
   logGroupName : 対象とするLogGroupの名前を指定します。
   logStreamNamePrefix : 対象とするLogStreamの接頭辞を指定します。
   limit : 取得するLogStreamの上限件数を指定します。
@@ -93,6 +95,8 @@ commands :
   command : 「AwsCwlGetLogStreamEvents」固定
   summary : コマンドの概要（任意）
   description : コマンドの詳細（任意）
+  credentialsConfigRef : 資格設定の参照
+  sdkHttpClientConfigRef : HTTPクライアント設定の参照
   logGroupName : 対象とするLogGroupの名前を指定します。
   logStreamNamePrefix : 対象とするLogStreamの接頭辞を指定します。
   streamLimit : LogStreamの件数の上限を設定します。デフォルトは1です。この数より多いLogStreamが存在する場合でも指定された値までしか取得しません。
@@ -126,6 +130,8 @@ commands :
   command : 「AwsCwlGetLogEvents」固定
   summary : コマンドの概要（任意）
   description : コマンドの詳細（任意）
+  credentialsConfigRef : 資格設定の参照
+  sdkHttpClientConfigRef : HTTPクライアント設定の参照
   logGroupName : 対象とするLogGroupの名前を指定します。
   logStreamName : 対象とするLogStreamの接頭辞を指定します。
   limit : 取得するLogStreamの上限件数を指定します。この数より多いLogStreamが存在する場合でも指定された値までしか取得しません。

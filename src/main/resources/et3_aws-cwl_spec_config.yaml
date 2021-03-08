@@ -79,35 +79,49 @@ commands:
         summary:
           - lang: ja_JP
             contents: コマンドの詳細（任意）
+      - order: 5
+        name: credentialsConfigRef
+        required: true
+        type: string
+        summary:
+          - lang: ja_JP
+            contents: "資格設定の参照"
       - order: 6
+        name: sdkHttpClientConfigRef
+        required: false
+        type: string
+        summary:
+          - lang: ja_JP
+            contents: "HTTPクライアント設定の参照"
+      - order: 7
         name: logGroupName
         required: true
         type: string
         summary:
           - lang: ja_JP
             contents: "対象とするLogGroupの名前を指定します。"
-      - order: 7
+      - order: 8
         name: logStreamNamePrefix
         required: false
         type: string
         summary:
           - lang: ja_JP
             contents: "対象とするLogStreamの接頭辞を指定します。"
-      - order: 8
+      - order: 9
         name: limit
         required: false
         type: number
         summary:
           - lang: ja_JP
             contents: "取得するLogStreamの上限件数を指定します。"
-      - order: 9
+      - order: 10
         name: orderBy
         required: false
         type: string
         summary:
           - lang: ja_JP
             contents: "結果のソート方法を「LogStreamName」、「LastEventTime」のいずれかを指定します。いずれかの文字列の完全一致でなければなりません。"
-      - order: 10
+      - order: 11
         name: descending
         required: false
         type: boolean
@@ -173,42 +187,56 @@ commands:
         summary:
           - lang: ja_JP
             contents: コマンドの詳細（任意）
+      - order: 5
+        name: credentialsConfigRef
+        required: true
+        type: string
+        summary:
+          - lang: ja_JP
+            contents: "資格設定の参照"
       - order: 6
+        name: sdkHttpClientConfigRef
+        required: false
+        type: string
+        summary:
+          - lang: ja_JP
+            contents: "HTTPクライアント設定の参照"
+      - order: 7
         name: logGroupName
         required: true
         type: string
         summary:
           - lang: ja_JP
             contents: "対象とするLogGroupの名前を指定します。"
-      - order: 7
+      - order: 8
         name: logStreamName
         required: false
         type: string
         summary:
           - lang: ja_JP
             contents: "対象とするLogStreamの接頭辞を指定します。"
-      - order: 8
+      - order: 9
         name: limit
         required: false
         type: number
         summary:
           - lang: ja_JP
             contents: "取得するLogStreamの上限件数を指定します。この数より多いLogStreamが存在する場合でも指定された値までしか取得しません。"
-      - order: 9
+      - order: 10
         name: startTime
         required: false
         type: number
         summary:
           - lang: ja_JP
             contents: "イベントの開始時間を指定します。エポックミリ秒で指定します。"
-      - order: 10
+      - order: 11
         name: endTime
         required: false
         type: number
         summary:
           - lang: ja_JP
             contents: "イベントの終了時間を指定します。エポックミリ秒で指定します。"
-      - order: 11
+      - order: 12
         name: startFromHead
         required: false
         type: boolean
@@ -279,63 +307,77 @@ commands:
         summary:
           - lang: ja_JP
             contents: コマンドの詳細（任意）
+      - order: 5
+        name: credentialsConfigRef
+        required: true
+        type: string
+        summary:
+          - lang: ja_JP
+            contents: "資格設定の参照"
       - order: 6
+        name: sdkHttpClientConfigRef
+        required: false
+        type: string
+        summary:
+          - lang: ja_JP
+            contents: "HTTPクライアント設定の参照"
+      - order: 7
         name: logGroupName
         required: true
         type: string
         summary:
           - lang: ja_JP
             contents: "対象とするLogGroupの名前を指定します。"
-      - order: 7
+      - order: 8
         name: logStreamNamePrefix
         required: false
         type: string
         summary:
           - lang: ja_JP
             contents: "対象とするLogStreamの接頭辞を指定します。"
-      - order: 8
+      - order: 9
         name: streamLimit
         required: false
         type: number
         summary:
           - lang: ja_JP
             contents: "LogStreamの件数の上限を設定します。デフォルトは1です。この数より多いLogStreamが存在する場合でも指定された値までしか取得しません。"
-      - order: 9
+      - order: 10
         name: orderBy
         required: false
         type: string
         summary:
           - lang: ja_JP
             contents: "結果のソート方法を「LogStreamName」、「LastEventTime」のいずれかを指定します。いずれかの文字列の完全一致でなければなりません。"
-      - order: 10
+      - order: 11
         name: descending
         required: false
         type: boolean
         summary:
           - lang: ja_JP
             contents: "結果のソートを降順にするかどうかのフラグです。"
-      - order: 11
+      - order: 12
         name: eventLimit
         required: false
         type: number
         summary:
           - lang: ja_JP
             contents: "取得するLogイベントの上限件数を指定します。この数より多いLogイベントが存在する場合でも指定された値までしか取得しません。"
-      - order: 12
+      - order: 13
         name: startTime
         required: false
         type: number
         summary:
           - lang: ja_JP
             contents: "イベントの開始時間を指定します。エポックミリ秒で指定します。"
-      - order: 13
+      - order: 14
         name: endTime
         required: false
         type: number
         summary:
           - lang: ja_JP
             contents: "イベントの終了時間を指定します。エポックミリ秒で指定します。"
-      - order: 14
+      - order: 15
         name: startFromHead
         required: false
         type: boolean
