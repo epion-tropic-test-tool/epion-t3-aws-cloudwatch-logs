@@ -35,4 +35,9 @@ public class AwsCwlAssertLogEvents extends Command {
      * 期待値リスト.
      */
     private List<AssertLogEventInfo> expected;
+
+    /**
+     * 期待値リスト定義ファイルパス.
+     */
+    private String expectedPath;
 }

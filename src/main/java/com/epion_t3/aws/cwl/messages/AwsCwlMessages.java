@@ -10,8 +10,14 @@ import com.epion_t3.core.message.Messages;
  */
 public enum AwsCwlMessages implements Messages {
 
+    /** 期待値が指定されていません. */
+    AWS_CWL_ERR_9006("com.epion_t3.aws.cwl.err.9006"),
+
     /** 結果値が見つかりません. パス:{0}, FlowId:{1} */
     AWS_CWL_ERR_9005("com.epion_t3.aws.cwl.err.9005"),
+
+    /** 期待値がファイルが存在しません. パス:{0} */
+    AWS_CWL_ERR_9007("com.epion_t3.aws.cwl.err.9007"),
 
     /** CloudWatchLogsのLogEventの取得に失敗しました。LogGroup:{0}, LogStream:{1} */
     AWS_CWL_ERR_9002("com.epion_t3.aws.cwl.err.9002"),

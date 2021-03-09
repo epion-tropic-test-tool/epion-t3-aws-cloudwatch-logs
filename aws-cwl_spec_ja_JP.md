@@ -165,6 +165,7 @@ commands :
   json : 対象のメッセージがJSONであるかを指定します。デフォルトはfalse＝JSONでない。となります。
   targetJsonPath : jsonが「true」の場合に、アサート対象を取得するためのJSONPathを指定します。
   expected : 期待値リストです。
+  expectedPath : 期待値を定義したJSONのパスを指定します。大量のログをアサートしたい場合に効果的です。
 
 ```
 
@@ -183,7 +184,9 @@ commands :
 
 |MessageID|MessageContents|
 |:---|:---|
+|com.epion_t3.aws.cwl.err.9006|期待値が指定されていません.|
 |com.epion_t3.aws.cwl.err.9005|結果値が見つかりません.　パス:{0}, FlowId:{1}|
+|com.epion_t3.aws.cwl.err.9007|期待値がファイルが存在しません. パス:{0}|
 |com.epion_t3.aws.cwl.err.9002|CloudWatchLogsのLogEventの取得に失敗しました。LogGroup:{0}, LogStream:{1}|
 |com.epion_t3.aws.cwl.err.9001|CloudWatchLogsのLogStreamの取得に失敗しました。LogGroup:{0}|
 |com.epion_t3.aws.cwl.err.9004|メッセージのJSON解析に失敗しました。JSON形式でない場合は、json指定をfalseにしてください。|

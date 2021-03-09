@@ -483,6 +483,13 @@ commands:
             summary:
               - lang: ja_JP
                 contents: "patternが正規表現である場合には、「true」を指定します。"
+      - order: 10
+        name: expectedPath
+        required: false
+        type: string
+        summary:
+          - lang: ja_JP
+            contents: "期待値を定義したJSONのパスを指定します。大量のログをアサートしたい場合に効果的です。"
 #####################################
 # メッセージ定義
 #####################################
@@ -507,3 +514,11 @@ messages:
     message:
       - lang: ja_JP
         contents: "結果値が見つかりません.　パス:{0}, FlowId:{1}"
+  - id: com.epion_t3.aws.cwl.err.9006
+    message:
+      - lang: ja_JP
+        contents: "期待値が指定されていません."
+  - id: com.epion_t3.aws.cwl.err.9007
+    message:
+      - lang: ja_JP
+        contents: "期待値がファイルが存在しません. パス:{0}"
